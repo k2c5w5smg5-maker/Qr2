@@ -1,0 +1,56 @@
+{
+  "identifier" : "5C1F2A3B",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "0.99",
+      "familyShareable" : false,
+      "internalID" : "1A2B3C4D",
+      "localizations" : [
+        {
+          "description" : "Unlock and download one QR code.",
+          "displayName" : "1 QR Code",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.example.qrmaker.credit.1",
+      "referenceName" : "1 QR Code Credit",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "2B3C4D5E",
+      "localizations" : [
+        {
+          "description" : "Unlock and download ten QR codes.",
+          "displayName" : "10 QR Codes",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.example.qrmaker.credit.10",
+      "referenceName" : "10 QR Code Credits",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "",
+    "_developerTeamID" : "",
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 0,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ]
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

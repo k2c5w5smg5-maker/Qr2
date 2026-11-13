@@ -1,7 +1,39 @@
-# QR Maker (iOS)
+# QR Maker and Label Maker (iOS)
 
-A simple, native iOS app for the App Store that makes QR codes and charges per code
-through Apple In-App Purchase.
+Two native iOS apps from one project:
+
+- **QR Maker** makes QR codes and charges per code through Apple In-App Purchase. It also
+  includes the label maker as its **Labels** tab.
+- **Label Maker** is the label maker on its own (target `LabelMaker`). It makes printable
+  sticker-sheet labels with an LLM, from a product page link or from spoken or typed
+  instructions.
+
+## Label Maker
+
+- **From a product page:** paste a link. The page is read on the phone (schema.org product
+  data, Open Graph tags and visible text), then the model writes a short title, subtitle,
+  up to three useful details, the price, the SKU or barcode number, and a QR code back to the
+  page.
+- **From your voice:** tap the mic and say something like "pantry labels for flour, sugar
+  and rice with today's date" or "garage sale stickers: lamp $5, bike $25". Dictation runs on
+  the device when supported.
+- **Edit by asking:** "make 10 of each", "the bike is $20 now", "remove the QR code". You can
+  also edit any label by hand.
+- **Print:** PDF sheets for Avery 5160, 5163, 5164, 5167, L7160, L7163, L7165 and full
+  sheets. Choose a start position to reuse part-used sheets. Pick a look (clean, bold, shelf
+  tag) and choose whether to show QR codes, prices and codes. Print with AirPrint or share
+  the PDF.
+- **Your own LLM:** the app calls any OpenAI-compatible endpoint you run (llama.cpp, Ollama,
+  vLLM). [`llm/`](llm/README.md) has the dataset format, seed data, a LoRA fine-tune script,
+  an evaluator and serving steps. With no model set up, an on-device rules engine writes the
+  labels, so the app works on its own.
+- **Training flywheel:** with *Save training examples* on, every printed sheet becomes a
+  fine-tuning example made of the prompt and the labels as you corrected them.
+
+`LabelKit/` is self-contained (no QR Maker types), and both app targets include it through a
+synchronised folder. To show it in any SwiftUI app, use `LabelMakerView()`.
+
+## QR Maker
 
 ## What it does
 
@@ -20,7 +52,17 @@ through Apple In-App Purchase.
 ## Project layout
 
 ```
-QRMaker.xcodeproj/          Xcode 16 project (folder-synchronised, no file lists to maintain)
+QRMaker.xcodeproj/          Xcode 16 project (folder-synchronised): targets QRMaker and LabelMaker
+LabelKit/                   The label maker, shared by both targets
+  Models/                   LabelContent (what the model writes), LabelTemplate (sheets), LabelDesign
+  Sources/ProductPage.swift Fetch a product page and extract ProductFacts (JSON-LD, Open Graph, text)
+  Model/                    LabelPrompt (shared prompt + reply parser), LabelModel protocol,
+                            RemoteLabelModel (your LLM), OnDeviceLabelModel (rules fallback)
+  Rendering/                LabelRenderer (auto-fit text + QR), LabelSheet (multi-page PDF), LabelQR
+  Services/                 LabelStudio (state), Dictation (speech), TrainingLog, Keychain
+  Views/                    LabelMakerView (root), LabelEditView, sheet settings/preview, model settings
+LabelMakerApp/              Standalone app entry point, icon and privacy manifest
+llm/                        Make, evaluate and serve your own label model (see llm/README.md)
 QRMaker/
   QRMakerApp.swift          App entry; injects StoreManager and CodeLibrary
   ContentView.swift         Tab bar: Create / My Codes
@@ -42,7 +84,7 @@ Requirements: Xcode 16 or newer, iOS 17 or newer.
 ## Run it locally
 
 1. Open `QRMaker.xcodeproj` in Xcode.
-2. Select the **QRMaker** scheme and an iPhone simulator, then Run.
+2. Select the **QRMaker** or **LabelMaker** scheme and an iPhone simulator, then Run.
 3. Purchases use `Configuration/Products.storekit`, so you can buy credits in the
    simulator without an App Store Connect account.
 

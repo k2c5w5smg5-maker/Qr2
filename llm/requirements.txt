@@ -1,0 +1,7 @@
+# For train_lora.py (GPU machine or Colab). The other scripts need only the standard library.
+torch>=2.3
+transformers>=4.46
+datasets>=3.0
+peft>=0.13
+trl>=0.20
+accelerate>=1.0

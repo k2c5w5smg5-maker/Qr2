@@ -1,0 +1,6 @@
+# Ollama recipe for the fine-tuned model. See llm/README.md, "Serve it".
+#   ollama create label-maker -f llm/Modelfile
+#   ollama serve        (OpenAI-compatible API at http://<host>:11434/v1)
+FROM ./out/label-maker-q4_k_m.gguf
+PARAMETER temperature 0.2
+PARAMETER num_ctx 4096

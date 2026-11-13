@@ -7,6 +7,8 @@ struct ContentView: View {
                 .tabItem { Label("Create", systemImage: "qrcode") }
             LibraryView()
                 .tabItem { Label("My Codes", systemImage: "square.grid.2x2") }
+            LabelMakerView()
+                .tabItem { Label("Labels", systemImage: "tag") }
         }
     }
 }

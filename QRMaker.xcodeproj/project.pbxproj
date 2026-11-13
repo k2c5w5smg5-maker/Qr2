@@ -8,6 +8,7 @@
 
 /* Begin PBXFileReference section */
 		7A1E0001000000000000A003 /* QRMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QRMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7A1E0001000000000000A011 /* LabelMaker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LabelMaker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -16,10 +17,27 @@
 			path = QRMaker;
 			sourceTree = "<group>";
 		};
+		7A1E0001000000000000A010 /* LabelKit */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LabelKit;
+			sourceTree = "<group>";
+		};
+		7A1E0001000000000000A012 /* LabelMakerApp */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = LabelMakerApp;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		7A1E0001000000000000A007 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A1E0001000000000000A015 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -33,6 +51,8 @@
 			isa = PBXGroup;
 			children = (
 				7A1E0001000000000000A009 /* QRMaker */,
+				7A1E0001000000000000A010 /* LabelKit */,
+				7A1E0001000000000000A012 /* LabelMakerApp */,
 				7A1E0001000000000000A002 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				7A1E0001000000000000A003 /* QRMaker.app */,
+				7A1E0001000000000000A011 /* LabelMaker.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -62,12 +83,36 @@
 			);
 			fileSystemSynchronizedGroups = (
 				7A1E0001000000000000A009 /* QRMaker */,
+				7A1E0001000000000000A010 /* LabelKit */,
 			);
 			name = QRMaker;
 			packageProductDependencies = (
 			);
 			productName = QRMaker;
 			productReference = 7A1E0001000000000000A003 /* QRMaker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7A1E0001000000000000A013 /* LabelMaker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7A1E0001000000000000A017 /* Build configuration list for PBXNativeTarget "LabelMaker" */;
+			buildPhases = (
+				7A1E0001000000000000A014 /* Sources */,
+				7A1E0001000000000000A015 /* Frameworks */,
+				7A1E0001000000000000A016 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				7A1E0001000000000000A012 /* LabelMakerApp */,
+				7A1E0001000000000000A010 /* LabelKit */,
+			);
+			name = LabelMaker;
+			packageProductDependencies = (
+			);
+			productName = LabelMaker;
+			productReference = 7A1E0001000000000000A011 /* LabelMaker.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -81,6 +126,9 @@
 				LastUpgradeCheck = 1600;
 				TargetAttributes = {
 					7A1E0001000000000000A004 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					7A1E0001000000000000A013 = {
 						CreatedOnToolsVersion = 16.0;
 					};
 				};
@@ -100,6 +148,7 @@
 			projectRoot = "";
 			targets = (
 				7A1E0001000000000000A004 /* QRMaker */,
+				7A1E0001000000000000A013 /* LabelMaker */,
 			);
 		};
 /* End PBXProject section */
@@ -112,10 +161,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		7A1E0001000000000000A016 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7A1E0001000000000000A006 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7A1E0001000000000000A014 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -256,7 +319,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "QR Maker";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "QR Maker connects to your label model on your local network.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "QR Maker listens while you dictate what your labels should say.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "QR Maker saves the QR codes you purchase to your photo library.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "QR Maker turns your spoken instructions into label text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -289,7 +355,10 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = "QR Maker";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "QR Maker connects to your label model on your local network.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "QR Maker listens while you dictate what your labels should say.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "QR Maker saves the QR codes you purchase to your photo library.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "QR Maker turns your spoken instructions into label text.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -301,6 +370,76 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.qrmaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		7A1E0001000000000000A018 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Label Maker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Label Maker connects to your label model on your local network.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Label Maker listens while you dictate what your labels should say.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Label Maker turns your spoken instructions into label text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.labelmaker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7A1E0001000000000000A019 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Label Maker";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = "Label Maker connects to your label model on your local network.";
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Label Maker listens while you dictate what your labels should say.";
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "Label Maker turns your spoken instructions into label text.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.labelmaker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -327,6 +466,15 @@
 			buildConfigurations = (
 				7A1E0001000000000000A00E /* Debug */,
 				7A1E0001000000000000A00F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7A1E0001000000000000A017 /* Build configuration list for PBXNativeTarget "LabelMaker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7A1E0001000000000000A018 /* Debug */,
+				7A1E0001000000000000A019 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

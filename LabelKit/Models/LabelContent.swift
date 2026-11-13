@@ -72,7 +72,8 @@ private extension KeyedDecodingContainer where K == LabelContent.CodingKeys {
     func lenientString(_ key: K) -> String {
         if let text = try? decode(String.self, forKey: key) { return text }
         if let number = try? decode(Double.self, forKey: key) {
-            return number == number.rounded() ? String(Int(number)) : String(number)
+            if let whole = Int(exactly: number) { return String(whole) }
+            return number.rounded() == number ? String(format: "%.0f", number) : String(number)
         }
         return ""
     }

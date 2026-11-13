@@ -40,7 +40,7 @@ struct LabelMakerView: View {
                 }
             }
             .navigationTitle("Label Maker")
-            .toolbar { toolbar }
+            .toolbar { toolbarContent }
             .sheet(isPresented: $showSettings) {
                 ModelSettingsView(studio: studio)
             }
@@ -181,7 +181,7 @@ struct LabelMakerView: View {
     }
 
     @ToolbarContentBuilder
-    private var toolbar: some ToolbarContent {
+    private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Button { showSettings = true } label: { Image(systemName: "gearshape") }
                 .accessibilityLabel("Settings")
@@ -210,11 +210,12 @@ struct LabelMakerView: View {
     }
 
     private func toggleDictation(into field: Field) {
-        if dictation.isListening {
-            let wasSameField = dictationField == field
+        if dictation.isListening, dictationField == field {
             dictation.stop()
-            if wasSameField { return }
+            return
         }
+        // Switching fields: start() restarts the recognizer without isListening ever
+        // reading false, so the onChange handler doesn't clear the new field.
         dictationField = field
         dictationBase = (field == .instructions ? instructions : revision).trimmed
         Task { await dictation.start() }

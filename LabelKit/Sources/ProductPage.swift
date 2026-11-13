@@ -30,7 +30,10 @@ struct ProductFacts: Codable, Equatable {
     var formattedPrice: String {
         let amount = price.trimmed
         guard !amount.isEmpty else { return "" }
-        guard let value = Double(amount.replacingOccurrences(of: ",", with: "")) else { return amount }
+        // "19,99" is a decimal comma; "1,299.00" uses commas for thousands.
+        let decimalComma = amount.range(of: #"^\d+,\d{1,2}$"#, options: .regularExpression) != nil
+        let normalized = decimalComma ? amount.replacingOccurrences(of: ",", with: ".") : amount.replacingOccurrences(of: ",", with: "")
+        guard let value = Double(normalized) else { return amount }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencyCode = currency.isEmpty ? (Locale.current.currency?.identifier ?? "USD") : currency
@@ -220,7 +223,8 @@ enum ProductPageReader {
             return decodeEntities(string).collapsedWhitespace
         case let number as NSNumber:
             let double = number.doubleValue
-            return double == double.rounded() ? String(Int(double)) : String(format: "%.2f", double)
+            if let whole = Int(exactly: double) { return String(whole) }
+            return double == double.rounded() ? String(format: "%.0f", double) : String(format: "%.2f", double)
         case let list as [Any]:
             return list.map { text($0) }.filter { !$0.isEmpty }.joined(separator: ", ")
         case let object as [String: Any]:

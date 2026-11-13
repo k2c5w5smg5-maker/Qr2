@@ -2,7 +2,7 @@ import CoreGraphics
 
 /// A sticker sheet: page size and where each label sits on it. All values are in PDF points
 /// (1/72 inch), measured from the top-left corner of the page.
-struct LabelTemplate: Identifiable, Hashable {
+struct LabelTemplate: Identifiable, Equatable {
     let id: String
     let name: String
     let detail: String

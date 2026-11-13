@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<!-- Lets the label maker reach a model server on the local network over plain http
+	     (e.g. http://my-mac.local:11434/v1 for Ollama). Internet hosts still need HTTPS.
+	     Merged with the generated Info.plist (GENERATE_INFOPLIST_FILE = YES). -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
+	</dict>
+</dict>
+</plist>

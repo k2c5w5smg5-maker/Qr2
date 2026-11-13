@@ -44,6 +44,17 @@ struct ModelSettings: Codable, Equatable {
     /// Keep a copy of each finished request + your edited labels as training data.
     var saveTrainingExamples = false
 
+    init() {}
+
+    /// Missing keys keep their defaults, so saved settings survive new fields.
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+        baseURL = (try? c.decodeIfPresent(String.self, forKey: .baseURL)) ?? baseURL
+        model = (try? c.decodeIfPresent(String.self, forKey: .model)) ?? model
+        fallbackOnDevice = (try? c.decodeIfPresent(Bool.self, forKey: .fallbackOnDevice)) ?? fallbackOnDevice
+        saveTrainingExamples = (try? c.decodeIfPresent(Bool.self, forKey: .saveTrainingExamples)) ?? saveTrainingExamples
+    }
+
     var endpoint: URL? {
         let trimmed = baseURL.trimmed
         guard !trimmed.isEmpty, let url = URL(string: trimmed), url.scheme != nil, url.host != nil else { return nil }

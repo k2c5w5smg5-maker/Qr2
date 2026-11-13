@@ -1,4 +1,5 @@
 import AVFoundation
+import Combine
 import Speech
 
 /// Live speech-to-text for spoken label instructions. Uses on-device recognition when the
@@ -14,6 +15,8 @@ final class Dictation: ObservableObject {
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
     private var tapInstalled = false
+    /// Bumped on every start so late callbacks from an earlier session are ignored.
+    private var generation = 0
 
     func toggle() async {
         if isListening { stop() } else { await start() }
@@ -30,11 +33,13 @@ final class Dictation: ObservableObject {
         }
         stop()
         transcript = ""
+        generation += 1
+        let session = generation
 
         do {
-            let session = AVAudioSession.sharedInstance()
-            try session.setCategory(.record, mode: .measurement, options: .duckOthers)
-            try session.setActive(true, options: .notifyOthersOnDeactivation)
+            let audio = AVAudioSession.sharedInstance()
+            try audio.setCategory(.record, mode: .measurement, options: .duckOthers)
+            try audio.setActive(true, options: .notifyOthersOnDeactivation)
 
             let request = SFSpeechAudioBufferRecognitionRequest()
             request.shouldReportPartialResults = true
@@ -43,7 +48,13 @@ final class Dictation: ObservableObject {
             self.request = request
 
             let input = engine.inputNode
-            input.installTap(onBus: 0, bufferSize: 1024, format: input.outputFormat(forBus: 0)) { buffer, _ in
+            let format = input.outputFormat(forBus: 0)
+            guard format.sampleRate > 0, format.channelCount > 0 else {
+                errorMessage = "No microphone is available right now."
+                stop()
+                return
+            }
+            input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
                 request.append(buffer)
             }
             tapInstalled = true
@@ -55,7 +66,7 @@ final class Dictation: ObservableObject {
                 let text = result?.bestTranscription.formattedString
                 let finished = error != nil || (result?.isFinal ?? false)
                 Task { @MainActor in
-                    guard let self else { return }
+                    guard let self, self.generation == session else { return }
                     if let text { self.transcript = text }
                     if finished { self.stop() }
                 }

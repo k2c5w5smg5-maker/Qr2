@@ -105,9 +105,9 @@ In the app: *Labels → gear icon → Your label model*. Enter the base URL (for
 - For a public App Store release, put the model behind HTTPS with your own domain. Don't
   hard-code a server key that unlocks anything else; a key inside an app can be extracted.
   Rate-limit the endpoint.
-- iOS blocks plain `http://` to internet hosts. For testing on your own network, use the
-  computer's local IP. If a request is still blocked, add an App Transport Security
-  exception for local networking to the target's Info settings.
+- iOS blocks plain `http://` to internet hosts. Local-network addresses (for example
+  `http://my-mac.local:11434/v1` or `http://192.168.1.20:8080/v1`) are allowed by
+  `Configuration/AppInfo.plist`; the first request asks the user for local network access.
 - Privacy: your server receives the page summary and the user's instructions. Declare that in
   App Store Connect's privacy section and in your privacy policy.
 

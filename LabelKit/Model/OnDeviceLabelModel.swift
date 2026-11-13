@@ -123,8 +123,9 @@ struct OnDeviceLabelModel: LabelModel {
     /// "Make 6 labels for flour, sugar and rice" → ["flour", "sugar", "rice"].
     static func items(in text: String) -> [Item] {
         var body = text
-        if let colon = body.firstIndex(of: ":") {
-            body = String(body[body.index(after: colon)...])
+        // A colon introduces the list, but not the one in "https://".
+        if let colon = body.range(of: #":(?!//)"#, options: .regularExpression) {
+            body = String(body[colon.upperBound...])
         } else {
             let lead = #"^\s*(please\s+)?(can you\s+|could you\s+)?(make|create|print|give me|i need|i want|we need)?\s*(me\s+)?(a|an|some|\d+|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|twenty|a dozen|dozen)?\s*((\w+\s+){0,2}?)(labels?|stickers?|tags?|copies)\s*(for|that says?|saying|reading|of|with)?\s*"#
             body = ProductPageReader.replace(lead, in: body, with: "")
@@ -142,7 +143,7 @@ struct OnDeviceLabelModel: LabelModel {
 
         let parsed = pieces.map { piece -> Item in
             let price = Self.price(in: piece)
-            let name = ProductPageReader.replace(#"(at|for)?\s*[$€£¥]\s?\d+([.,]\d{1,2})?|\d+([.,]\d{1,2})?\s?(dollars|euros|pounds)"#, in: piece, with: "")
+            let name = ProductPageReader.replace(#"(at|for)?\s*[$€£¥]\s?\d{1,3}(,\d{3})+(\.\d{1,2})?|(at|for)?\s*[$€£¥]\s?\d+([.,]\d{1,2})?|\d+([.,]\d{1,2})?\s?(dollars|euros|pounds)"#, in: piece, with: "")
                 .trimmingCharacters(in: CharacterSet.whitespacesAndNewlines.union(.punctuationCharacters))
             return Item(name: name, price: price)
         }.filter { !$0.name.isEmpty }
@@ -162,7 +163,7 @@ struct OnDeviceLabelModel: LabelModel {
     }
 
     static func price(in text: String) -> String? {
-        if let symbol = ProductPageReader.allMatches(#"[$€£¥]\s?\d+([.,]\d{1,2})?"#, in: text).first {
+        if let symbol = ProductPageReader.allMatches(#"[$€£¥]\s?\d{1,3}(,\d{3})+(\.\d{1,2})?|[$€£¥]\s?\d+([.,]\d{1,2})?"#, in: text).first {
             return symbol.replacingOccurrences(of: " ", with: "")
         }
         if let words = ProductPageReader.allMatches(#"\d+([.,]\d{1,2})?\s?(dollars|bucks)"#, in: text).first,

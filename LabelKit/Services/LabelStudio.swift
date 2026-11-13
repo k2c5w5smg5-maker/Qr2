@@ -4,7 +4,7 @@ import SwiftUI
 /// Drafts are saved so they survive relaunches.
 @MainActor
 final class LabelStudio: ObservableObject {
-    @Published var labels: [LabelContent] = [] { didSet { save() } }
+    @Published var labels: [LabelContent] = [] { didSet { save(); exampleRecorded = false } }
     @Published var templateID: String = LabelTemplate.all[0].id { didSet { save() } }
     @Published var design = LabelDesign() { didSet { save() } }
     /// 1-based first free position on the first sheet.
@@ -19,6 +19,9 @@ final class LabelStudio: ObservableObject {
 
     /// The request behind the current labels, kept for training examples.
     private var lastRequest: LabelRequest?
+    /// Set once the current labels were saved as a training example, so sharing and then
+    /// printing the same sheet doesn't log it twice.
+    private var exampleRecorded = false
     private let defaults: UserDefaults
     private var loading = false
 
@@ -139,8 +142,9 @@ final class LabelStudio: ObservableObject {
 
     /// Saves the last request and the labels as finally edited, when the user opted in.
     func recordTrainingExample() {
-        guard settings.saveTrainingExamples, let request = lastRequest else { return }
+        guard settings.saveTrainingExamples, !exampleRecorded, let request = lastRequest else { return }
         TrainingLog.append(request: request, labels: labels)
+        exampleRecorded = true
     }
 
     // MARK: - Persistence
@@ -150,6 +154,21 @@ final class LabelStudio: ObservableObject {
         var templateID: String
         var design: LabelDesign
         var settings: ModelSettings
+
+        init(labels: [LabelContent], templateID: String, design: LabelDesign, settings: ModelSettings) {
+            self.labels = labels
+            self.templateID = templateID
+            self.design = design
+            self.settings = settings
+        }
+
+        init(from decoder: Decoder) throws {
+            let c = try decoder.container(keyedBy: CodingKeys.self)
+            labels = (try? c.decodeIfPresent([LabelContent].self, forKey: .labels)) ?? []
+            templateID = (try? c.decodeIfPresent(String.self, forKey: .templateID)) ?? LabelTemplate.all[0].id
+            design = (try? c.decodeIfPresent(LabelDesign.self, forKey: .design)) ?? LabelDesign()
+            settings = (try? c.decodeIfPresent(ModelSettings.self, forKey: .settings)) ?? ModelSettings()
+        }
     }
 
     private static let storageKey = "LabelKit.studio.v1"
@@ -165,6 +184,8 @@ final class LabelStudio: ObservableObject {
     private func load() {
         guard let data = defaults.data(forKey: Self.storageKey),
               let saved = try? JSONDecoder().decode(Saved.self, from: data) else { return }
+        // Saved, LabelDesign and ModelSettings decode leniently, so adding a field later
+        // doesn't throw away the user's drafts.
         loading = true
         defer { loading = false }
         labels = saved.labels

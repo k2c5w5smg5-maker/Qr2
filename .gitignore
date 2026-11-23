@@ -15,3 +15,9 @@ Packages/
 
 # macOS
 .DS_Store
+
+# Label model training outputs
+llm/out/
+llm/data/train.jsonl
+llm/data/eval.jsonl
+__pycache__/
